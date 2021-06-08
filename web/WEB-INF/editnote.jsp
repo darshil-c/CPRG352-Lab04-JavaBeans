@@ -12,7 +12,7 @@
         <title>Simple Note Keeper</title>
     </head>
     <body>
-        <form>
+        <form method="post" action="note">
             <h1>Simple Note Keeper</h1>
             <h2>Edit Note</h2>
             <label for="title">Title:</label>

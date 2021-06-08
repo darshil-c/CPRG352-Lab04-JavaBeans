@@ -27,44 +27,47 @@ public class NoteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // get the path to note.txt and link it up with BufferedReader
         String path = getServletContext().getRealPath("/WEB-INF/note.txt");
         BufferedReader br = new BufferedReader(new FileReader(new File(path)));
-        String titleQuery = request.getParameter("title");
-        String contentQuery = request.getParameter("content");
-        Note note;
 
-        if (titleQuery == null && contentQuery == null) {
-            String title = br.readLine();
-            String content = br.readLine();
-            note = new Note(title, content);
-        } else {
-            note = new Note(titleQuery, contentQuery);
-        }
+        // read the contents from the file
+        String title = br.readLine();
+        String content = br.readLine();
 
-       
+        // create a new note to hold title and contents
+        Note note = new Note(title, content);
 
+        // attribute for the JSPs
         request.setAttribute("note", note);
 
+        // parameter to check if edit link has been pressed
         String editNote = request.getParameter("edit");
-
         if (editNote == null) {
             getServletContext().getRequestDispatcher("/WEB-INF/viewnote.jsp").forward(request, response);
         } else if (editNote.isEmpty()) {
             getServletContext().getRequestDispatcher("/WEB-INF/editnote.jsp").forward(request, response);
-
         }
-
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // get the path to note.txt and link it up with PrintWriter
         String path = getServletContext().getRealPath("/WEB-INF/note.txt");
         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(path, false)));
+        
+        // get the title and contents from the note page
         String title = request.getParameter("title");
         String content = request.getParameter("content");
-        pw.print(title);
+        
+        // write the contents to the file and close it
+        pw.println(title);
         pw.println(content);
+        pw.close();
+        
+        // call doGet to go back to viewnote
+        doGet(request, response);
     }
 
 }

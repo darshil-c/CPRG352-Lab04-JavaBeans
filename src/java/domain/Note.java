@@ -16,16 +16,19 @@ public class Note implements Serializable{
     private String title;
     private String content;
 
+    // default constructor
     public Note() {
-        this.title = "";
-        this.content = "";
+        this.title = "This is the title";
+        this.content = "Contents go here";
     }
 
+    // user defined constructor
     public Note(String title, String content) {
         this.title = title;
         this.content = content;
     }
 
+    // setters and getters for variables
     public String getTitle() {
         return title;
     }
